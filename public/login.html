@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetGay - Connexion</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-family: inherit;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            color: white;
+            font-size: 12px;
+        }
+
+        .site-footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 550px) {
+            .login-box {
+                padding: 25px;
+                margin: 0 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // AJOUT PROTECTION 18+ : Vérifier si l'utilisateur a validé son âge
+        (function checkAgeVerification() {
+            const isAgeVerified = sessionStorage.getItem('meetgay_age_verified');
+            if (!isAgeVerified) {
+                // Pas de validation 18+ -> redirection vers l'accueil
+                window.location.href = '/index.html';
+                return;
+            }
+            // Optionnel : vérifier que la validation date de moins de 24h (86400000 ms)
+            const verifiedTime = sessionStorage.getItem('meetgay_age_verified_time');
+            if (verifiedTime && (Date.now() - parseInt(verifiedTime) > 86400000)) {
+                sessionStorage.removeItem('meetgay_age_verified');
+                window.location.href = '/index.html';
+            }
+        })();
+    </script>
+    <div class="page-container">
+        <div class="login-box">
+            <h1>✉️ MeetGay</h1>
+            <div class="subtitle" id="subtitle">Rejoignez le chat</div>
+
+            <form id="loginForm">
+                <label id="labelPseudo">👤 Pseudo :</label>
+                <input type="text" id="pseudo" maxlength="15" placeholder="15 caractères max" required>
+
+                <label id="labelAge">🎂 Âge :</label>
+                <select id="age" required>
+                    <option value="" id="ageDefault">Sélectionnez votre âge</option>
+                </select>
+
+                <label id="labelTendencies">⬆️⬇️↔️ Orientation :</label>
+                <select id="tendencies" required>
+                    <option value="" id="tendenciesDefault">Sélectionnez</option>
+                    <option value="A" id="optA">▲ Actif (A)</option>
+                    <option value="P" id="optP">▼ Passif (P)</option>
+                    <option value="V" id="optV">▲▼ Versatile (V)</option>
+                </select>
+
+                <label id="labelGender">⚧ Genre :</label>
+                <select id="gender" required>
+                    <option value="" id="genderDefault">Sélectionnez</option>
+                    <option value="G">Gay</option>
+                    <option value="H">Hétéro</option>
+                    <option value="T">Transgenre</option>
+                </select>
+                
+                <label id="labelPurpose">🎯 Je suis ici pour :</label>
+                <select id="purpose" required>
+                    <option value="" id="purposeDefault">Sélectionnez</option>
+                    <option value="meeting">💬 Rencontre</option>
+                    <option value="flirt">😘 Flirt</option>
+                    <option value="adultery">💔 Relation sexuelle</option>
+                </select>
+
+                <label id="labelLocation">📍 Localité :</label>
+                <select id="location" required>
+                    <option value="" id="locationDefault">Sélectionnez votre région</option>
+                    <option value="BRU">🇧🇪 Bruxelles (BRU)</option>
+                    <option value="ANV">🇧🇪 Anvers (ANV)</option>
+                    <option value="LIE">🇧🇪 Liège (LIE)</option>
+                    <option value="GAND">🇧🇪 Gand (GAND)</option>
+                    <option value="CHAR">🇧🇪 Charleroi (CHAR)</option>
+                    <option value="NAM">🇧🇪 Namur (NAM)</option>
+                    <option value="MONS">🇧🇪 Mons (MONS)</option>
+                    <option value="LUV">🇧🇪 Louvain (LUV)</option>
+                    <option value="BRUGE">🇧🇪 Bruges (BRUGE)</option>
+                    <option value="ARLON">🇧🇪 Arlon (ARLON)</option>
+                    <option value="AUTRE">🇧🇪 Autre (AUTRE)</option>
+                </select>
+
+                <label id="labelBio">📝 Présentez-vous :</label>
+                <textarea id="bio" maxlength="100"
+                    placeholder="Quelques mots sur vous... (100 caractères max)"></textarea>
+                <div class="char-counter">
+                    <span id="bioCounter">0</span> / 100 caractères
+                </div>
+
+                <button type="submit" id="submitBtn">🎮 ENTRER DANS LE CHAT</button>
+            </form>
+
+            <div class="note" id="note">
+                ⚡ Chat privé instantané<br>
+                Cliquez sur un pseudo pour lui parler
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            © 2026 MeetGay - Chat Belgique -
+            <a href="/mentions-legales.html">Mentions légales</a> -
+            <a href="/cgu.html">CGU</a> -
+            <a href="/contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Lire la langue choisie dans index.html (stockée dans localStorage)
+        let currentLang = localStorage.getItem('MeetGay_lang') || 'fr';
+
+        // Traductions (sans switch visuel)
+        const translations = {
+            fr: {
+                subtitle: "Rejoignez le chat",
+                pseudo: "👤 Pseudo :",
+                age: "🎂 Âge :",
+                ageDefault: "Sélectionnez votre âge",
+                tendencies: "⬆️⬇️↔️ Orientation :",
+                tendenciesDefault: "Sélectionnez",
+                location: "📍 Localité :",
+                locationDefault: "Sélectionnez votre région",
+                bio: "📝 Présentez-vous :",
+                bioPlaceholder: "Quelques mots sur vous... (100 caractères max)",
+                submit: "🎮 ENTRER DANS LE CHAT",
+                note: "⚡ Chat privé instantané\nCliquez sur un pseudo pour lui parler",
+                gender: "⚧ Genre :",
+                genderDefault: "Sélectionnez",
+                genderG: " Gay",
+                genderH: " Hétéro",
+                genderT: " Transgenre",
+                purpose: "🎯 Je suis ici pour :",
+                purposeDefault: "Sélectionnez",
+                purposeMeeting: "💬 Rencontre",
+                purposeFlirt: "😘 Flirt",
+                purposeAdultery: "💔 Relation sexuelle"
+            },
+            nl: {
+                subtitle: "Praat mee",
+                pseudo: "👤 Gebruikersnaam :",
+                age: "🎂 Leeftijd :",
+                ageDefault: "Selecteer uw leeftijd",
+                tendencies: "⬆️⬇️↔️ Oriëntatie :",
+                tendenciesDefault: "Selecteer",
+                location: "📍 Locatie :",
+                locationDefault: "Selecteer uw regio",
+                bio: "📝 Stel je voor :",
+                bioPlaceholder: "Een paar woorden over jezelf... (100 tekens max)",
+                submit: "🎮 CHAT BINNENKOMEN",
+                note: "⚡ Privé chat\nKlik op een pseudoniem om te praten",
+                gender: "⚧ Geslacht :",
+                genderDefault: "Selecteer",
+                genderG: " Gay",
+                genderH: " Hetero",
+                genderT: " Transgender",
+                purpose: "🎯 Ik ben hier voor :",
+                purposeDefault: "Selecteer",
+                purposeMeeting: "💬 Ontmoeting",
+                purposeFlirt: "😘 Flirt",
+                purposeAdultery: "💔 Seksuele relatie"
+            }
+        };
+
+        
+
+        // Appliquer la langue (sans switch)
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            if (!t) return;
+
+            document.getElementById('subtitle').innerText = t.subtitle;
+            document.getElementById('labelPseudo').innerHTML = t.pseudo;
+            document.getElementById('labelAge').innerHTML = t.age;
+            document.getElementById('ageDefault').innerText = t.ageDefault;
+            document.getElementById('labelTendencies').innerHTML = t.tendencies;
+            document.getElementById('tendenciesDefault').innerText = t.tendenciesDefault;
+            document.getElementById('labelLocation').innerHTML = t.location;
+            document.getElementById('locationDefault').innerText = t.locationDefault;
+            document.getElementById('labelBio').innerHTML = t.bio;
+            document.getElementById('bio').placeholder = t.bioPlaceholder;
+            document.getElementById('submitBtn').innerHTML = t.submit;
+                // Genre
+            document.getElementById('labelGender').innerHTML = t.gender;
+            document.getElementById('genderDefault').innerText = t.genderDefault;
+            document.querySelector('#gender option[value="G"]').innerText = t.genderG;
+            document.querySelector('#gender option[value="H"]').innerText = t.genderH;
+            document.querySelector('#gender option[value="T"]').innerText = t.genderT;
+
+            // Purpose
+            document.getElementById('labelPurpose').innerHTML = t.purpose;
+            document.getElementById('purposeDefault').innerText = t.purposeDefault;
+            document.querySelector('#purpose option[value="meeting"]').innerText = t.purposeMeeting;
+            document.querySelector('#purpose option[value="flirt"]').innerText = t.purposeFlirt;
+            document.querySelector('#purpose option[value="adultery"]').innerText = t.purposeAdultery;
+            document.getElementById('note').innerHTML = t.note.replace(/\n/g, '<br>');
+        }
+
+        // Traduction orientation (appelée après applyLanguage)
+            function translateOrientation() {
+                const currentLang = localStorage.getItem('MeetGay_lang') || 'fr';
+                if (currentLang === 'nl') {
+                    document.getElementById('optA').innerText = '▲ Actief (A)';
+                    document.getElementById('optP').innerText = '▼ Passief (P)';
+                    document.getElementById('optV').innerText = '▲▼ Veelzijdig (V)';
+                } else {
+                    document.getElementById('optA').innerText = '▲ Actif (A)';
+                    document.getElementById('optP').innerText = '▼ Passif (P)';
+                    document.getElementById('optV').innerText = '▲▼ Versatile (V)';
+                }
+            }
+
+            
+
+            // Appeler cette fonction après chaque changement de langue
+            translateOrientation();
+
+        // Remplir les âges (18 à 99)
+        // Remplir les âges (18 à 99) avec traduction
+            const ageSelect = document.getElementById('age');
+            const lang = localStorage.getItem('MeetGay_lang') || 'fr';
+            const ageSuffix = lang === 'fr' ? 'ans' : 'jaar';
+
+            for (let i = 18; i <= 99; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i} ${ageSuffix}`;
+                ageSelect.appendChild(option);
+            }
+
+            
+
+        // Compteur de caractères pour la bio
+        const bioTextarea = document.getElementById('bio');
+        const bioCounter = document.getElementById('bioCounter');
+        bioTextarea.addEventListener('input', () => {
+            bioCounter.textContent = bioTextarea.value.length;
+        });
+
+        // Nettoyer les entrées
+        function cleanInput(str) {
+            return str.replace(/[<>]/g, '').trim();
+        }
+
+        // Soumission du formulaire
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const pseudo = cleanInput(document.getElementById('pseudo').value);
+            const bio = cleanInput(document.getElementById('bio').value);
+
+            if (pseudo.length < 2) {
+                alert(currentLang === 'fr' ? "Le pseudo doit faire au moins 2 caractères" : "De gebruikersnaam moet minimaal 2 tekens bevatten");
+                return;
+            }
+
+            if (pseudo.length > 15) {
+                alert(currentLang === 'fr' ? "Le pseudo ne peut pas dépasser 15 caractères" : "De gebruikersnaam mag niet meer dan 15 tekens bevatten");
+                return;
+            }
+
+            const user = {
+                pseudo: pseudo,
+                age: document.getElementById('age').value,
+                tendencies: document.getElementById('tendencies').value,
+                locationCode: document.getElementById('location').value,
+                locationName: document.getElementById('location').selectedOptions[0]?.text || document.getElementById('location').value,
+                bio: bio.substring(0, 100) || (currentLang === 'fr' ? "Aucune présentation" : "Geen introductie"),
+                gender: document.getElementById('gender').value,        // ← AJOUT
+                purpose: document.getElementById('purpose').value,      // ← AJOUT
+                language: currentLang
+            };
+
+            localStorage.setItem('chatUser', JSON.stringify(user));
+            window.location.href = '/chat.html';
+        });
+
+        // Appliquer la langue au chargement
+        applyLanguage(currentLang);
+    </script>
+    <script>
+        function chooseLanguage(lang) {
+            localStorage.setItem('nostalgia_lang', lang);
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+
+</html>

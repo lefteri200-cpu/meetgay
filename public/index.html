@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+
+    <title>MeetGay - Chat Belgique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .welcome-box {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+
+        .lang-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .lang-btn {
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .lang-btn.fr {
+            background: #0055a4;
+            color: white;
+        }
+
+        .lang-btn.nl {
+            background: #ff6600;
+            color: white;
+        }
+
+        .lang-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .feature {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .feature span {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .age-warning {
+            margin-top: 30px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        /* MENU DÉROULANT PETIT ET FIN - PLACÉ EN BAS */
+        .age-verification-bottom {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .age-selector-small {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .age-selector-small label {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .age-selector-small select {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            color: #333;
+            width: auto;
+            min-width: 140px;
+        }
+
+        .age-selector-small select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .age-error-small {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            display: none;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .age-error-small.show {
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            color: white;
+            font-size: 12px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .welcome-box {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .lang-btn {
+                padding: 10px 25px;
+                font-size: 18px;
+            }
+
+            .age-selector-small {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-box">
+            <h1>💬 MeetGay</h1>
+            <div class="subtitle">Belgique - Rencontres et discussions</div>
+
+            <div class="lang-buttons">
+                <button class="lang-btn fr" id="btnFr" disabled>🇫🇷 Français</button>
+                <button class="lang-btn nl" id="btnNl" disabled>🇳🇱 Nederlands</button>
+            </div>
+
+            <div class="features">
+                <div class="feature"><span>✉️</span> Messages privés</div>
+                <div class="feature"><span>👥</span> Rencontres gay</div>
+                <div class="feature"><span>💬</span> Chat instantané</div>
+            </div>
+
+            <div class="age-warning">
+                ⚠️ Site réservé aux personnes majeures (18+)
+            </div>
+
+            <!-- MENU DÉROULANT PETIT ET FIN EN BAS -->
+            <div class="age-verification-bottom">
+                <div class="age-selector-small">
+                    <label>📋 Vérification âge :</label>
+                    <select id="ageSelect">
+                        <option value="">-- Sélectionner --</option>
+                        <option value="18plus">✅ J'ai +18 ans</option>
+                        <option value="18moins">❌ J'ai -18 ans</option>
+                    </select>
+                    <div id="ageError" class="age-error-small">
+                        ⚠️ Désolé, site réservé aux 18+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="footer-content">
+            © 2026 MeetGay - Chat Belgique -
+            <a href="/mentions-legales.html">Mentions légales</a> -
+            <a href="/cgu.html">CGU</a> -
+            <a href="/contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        const ageSelect = document.getElementById('ageSelect');
+        const btnFr = document.getElementById('btnFr');
+        const btnNl = document.getElementById('btnNl');
+        const ageError = document.getElementById('ageError');
+
+        btnFr.disabled = true;
+        btnNl.disabled = true;
+
+        ageSelect.addEventListener('change', function () {
+            const selectedValue = ageSelect.value;
+
+            if (selectedValue === '18plus') {
+                btnFr.disabled = false;
+                btnNl.disabled = false;
+                ageError.classList.remove('show');
+            }
+            else if (selectedValue === '18moins') {
+                btnFr.disabled = true;
+                btnNl.disabled = true;
+                ageError.classList.add('show');
+            }
+            else {
+                btnFr.disabled = true;
+                btnNl.disabled = true;
+                ageError.classList.remove('show');
+            }
+        });
+
+        // AJOUT PROTECTION 18+ : Enregistrer la validation dans sessionStorage
+        function setAgeVerified() {
+                sessionStorage.setItem('meetgay_age_verified', 'true');
+                sessionStorage.setItem('meetgay_age_verified_time', Date.now());
+            }
+
+        function chooseLanguage(lang) {
+                if (ageSelect.value !== '18plus') {
+                    ageError.classList.add('show');
+                    return;
+                }
+                // AJOUT PROTECTION 18+ : enregistrer que l'utilisateur est majeur
+                setAgeVerified();
+                localStorage.setItem('MeetGay_lang', lang);
+                window.location.href = '/login.html';
+            }
+
+        btnFr.onclick = () => chooseLanguage('fr');
+        btnNl.onclick = () => chooseLanguage('nl');
+    </script>
+</body>
+
+</html>
