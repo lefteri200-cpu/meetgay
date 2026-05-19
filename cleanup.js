@@ -3,7 +3,11 @@
 const { Pool } = require('pg');
 
 // ========== CONNEXION À SUPABASE ==========
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    family: 4  // ← FORCE L'UTILISATION D'IPv4
+});
 
 console.log('🧹 Module de nettoyage chargé (en attente de démarrage)');
 
