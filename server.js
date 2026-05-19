@@ -1,5 +1,16 @@
 // ========== CHARGEMENT DES VARIABLES ==========
-require('dotenv').config();
+// ========== CHARGEMENT DES VARIABLES D'ENVIRONNEMENT ==========
+// dotenv est utilisé uniquement en développement local
+if (process.env.NODE_ENV !== 'production') {
+    try {
+        require('dotenv').config();
+        console.log('✅ dotenv chargé (environnement local)');
+    } catch (err) {
+        console.log('⚠️ dotenv non installé, utilisation des variables système');
+    }
+} else {
+    console.log('✅ Mode production, variables Render utilisées');
+}
 
 const express = require('express');
 const http = require('http');
