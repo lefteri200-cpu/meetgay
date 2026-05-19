@@ -44,21 +44,27 @@ const users = {};
 // ========== ROUTES API ==========
 app.post('/api/register', async (req, res) => {
     try {
-        const { isBanned } = require('./moderation');
-
-        // Vérifier si l'utilisateur est banni (avant toute insertion)
-        const banned = await isBanned(pool, pseudo, req.ip, null);
-        if (banned) {
-            return res.status(403).json({ error: 'Vous êtes banni de ce site' });
-        }
+        // ========== DÉCLARATION DES VARIABLES D'ABORD ==========
         const { pseudo, age, tendencies, locationCode, locationName, bio, gender, purpose } = req.body;
-        if (!pseudo || !age) return res.status(400).json({ error: 'Pseudo et âge requis' });
+
+        // Vérification (après déclaration)
+        if (!pseudo || !age) {
+            return res.status(400).json({ error: 'Pseudo et âge requis' });
+        }
+
+        // Insertion dans la base
         const result = await pool.query(
             `INSERT INTO users (pseudo, age, tendencies, location_code, location_name, bio, gender, purpose)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (pseudo) DO NOTHING RETURNING *`,
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+             ON CONFLICT (pseudo) DO NOTHING
+             RETURNING *`,
             [pseudo, age, tendencies, locationCode, locationName, bio, gender, purpose]
         );
-        if (result.rows.length === 0) return res.status(400).json({ error: 'Pseudo déjà utilisé' });
+
+        if (result.rows.length === 0) {
+            return res.status(400).json({ error: 'Pseudo déjà utilisé' });
+        }
+
         res.json({ success: true, user: result.rows[0] });
     } catch (err) {
         console.error('Erreur inscription:', err);
