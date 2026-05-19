@@ -3,14 +3,7 @@
 const { Pool } = require('pg');
 
 // ========== CONNEXION À SUPABASE ==========
-const pool = new Pool({
-    host: process.env.PGHOST,
-    port: process.env.PGPORT,
-    database: process.env.PGDATABASE,
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    ssl: { rejectUnauthorized: false }
-});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 console.log('🧹 Module de nettoyage chargé (en attente de démarrage)');
 
