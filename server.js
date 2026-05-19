@@ -47,15 +47,15 @@ const users = {};
 // ========== ROUTES API ==========
 app.post('/api/register', async (req, res) => {
     try {
-        // ========== DÉCLARATION DES VARIABLES D'ABORD ==========
+        // 1. On déclare et on extrait d'abord
         const { pseudo, age, tendencies, locationCode, locationName, bio, gender, purpose } = req.body;
 
-        // Vérification (après déclaration)
+        // 2. Ensuite on vérifie
         if (!pseudo || !age) {
             return res.status(400).json({ error: 'Pseudo et âge requis' });
         }
 
-        // Insertion dans la base
+        // 3. Puis on utilise les variables
         const result = await pool.query(
             `INSERT INTO users (pseudo, age, tendencies, location_code, location_name, bio, gender, purpose)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
