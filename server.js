@@ -319,10 +319,10 @@ setInterval(async () => {
     }
 }, 60 * 1000); // 1 minute pour tester, mets 5*60*1000 après
 
-
 // ========== DÉMARRAGE ==========
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
-    console.log(`📊 Base de données: ${process.env.DATABASE_URL ? 'configurée' : 'NON CONFIGURÉE'}`);
+    console.log(`📊 Connexion Supabase: ${process.env.PGHOST ? 'configurée' : 'NON CONFIGURÉE'}`);
+    console.log(`📊 Host: ${process.env.PGHOST}`);
 });
