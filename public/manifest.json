@@ -1,6 +1,6 @@
 {
-    "name": "Nostalgia Chat",
-    "short_name": "Nostalgia",
+    "name": "MeetGayBelgium",
+    "short_name": "MeetGay",
     "description": "Chat privé pour rencontres en Belgique",
     "start_url": "/",
     "display": "standalone",
@@ -58,4 +58,6 @@
             "purpose": "any maskable"
         }
     ]
+    
 }
+
