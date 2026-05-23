@@ -1,4 +1,6 @@
 {
+    "git.enabled": false,
+    "git.autofetch": false,
     "CodeRunr.commands": [
         {
             "match": ".*",
