@@ -7,6 +7,6 @@
         }
     ],
 
-        "git.enabled": false,
+        "git.enabled": true,
         "git.autofetch": false
 }
