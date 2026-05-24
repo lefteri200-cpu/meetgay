@@ -374,5 +374,3 @@ app.use((req, res, next) => {
 app.get("/editor.html", (req, res) => {
     res.sendFile("/root/meetgay/public/editor/editor.html");
 });
-
-
