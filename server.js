@@ -71,6 +71,9 @@ app.use((req, res, next) => {
     next();
 });
 
+// Servir les fichiers statiques de l'éditeur
+app.use(express.static('/root/meetgay/public/editor'));
+
 app.use(express.json());
 // JWT_SECRET déclaré d’abord
 var JWT_SECRET = process.env.JWT_SECRET || 'meetgay_super_secret_key_2026';
