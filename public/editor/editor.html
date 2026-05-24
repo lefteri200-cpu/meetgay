@@ -2738,6 +2738,67 @@ Vvveb.FileManager.loadPage(pages[firstPage]["name"]);
 Vvveb.Gui.toggleRightColumn(false);
 Vvveb.Breadcrumb.init();
 </script>
+<script>
+	// Charger la traduction française
+	async function loadFrenchTranslation() {
+		try {
+			const response = await fetch('/_locales/fr/messages.json');
+			const translations = await response.json();
+
+			// Appliquer les traductions à VvvebJs si supporté
+			if (window.Vvveb && Vvveb.i18n) {
+				Vvveb.i18n.setTranslations(translations);
+			}
+
+			// Sinon, appliquer manuellement
+			applyTranslations(translations);
+		} catch (e) {
+			console.log('Traduction non chargée:', e);
+		}
+	}
+
+	// Appliquer les traductions manuellement au DOM
+	function applyTranslations(translations) {
+		const observer = new MutationObserver(() => {
+			translateElement(translations);
+		});
+
+		observer.observe(document.body, { childList: true, subtree: true });
+		setTimeout(() => translateElement(translations), 500);
+	}
+
+	function translateElement(translations) {
+		const flatTranslations = {};
+
+		// Aplatir l'objet JSON
+		function flatten(obj, prefix = '') {
+			for (let key in obj) {
+				if (typeof obj[key] === 'object') {
+					flatten(obj[key], prefix + key + '.');
+				} else {
+					flatTranslations[obj[key]] = obj[key];
+					flatTranslations[key] = obj[key];
+				}
+			}
+		}
+
+		flatten(translations);
+
+		// Remplacer les textes
+		document.querySelectorAll('*').forEach(el => {
+			if (el.children.length === 0 && el.textContent.trim()) {
+				for (let [eng, fr] of Object.entries(flatTranslations)) {
+					if (el.textContent.trim() === eng) {
+						el.textContent = fr;
+					}
+				}
+			}
+		});
+	}
+
+	// Lancer la traduction
+	loadFrenchTranslation();
+</script>
 </body>
 
 </html>
