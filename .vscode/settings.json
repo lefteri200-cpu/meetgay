@@ -2,7 +2,7 @@
     "CodeRunr.commands": [
         {
             "match": ".*",
-            "command": "cd /root/meetgay && git add . && git commit -m \"Auto-save\" && git push origin HEAD:main --force",
+            "command": "cd /root/meetgay && git add . && git commit -m \"Auto-save\" && git push origin main",
             "runIn": "terminal"
         }
     ],
