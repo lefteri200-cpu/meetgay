@@ -2289,7 +2289,7 @@ Vvveb.Builder = {
 				bg = "danger";
 			}
 			
-			displayToast(bg, "Save", data.message ?? data);					
+			displayToast(bg, "Enregistrer", data.message ?? data);					
 		})
 		.catch(error => {
 			console.log(error.statusText);
@@ -2309,7 +2309,7 @@ Vvveb.Builder = {
 				bg = "danger";
 			}
 			
-			displayToast(bg, "Save", data.message ?? data);			
+			displayToast(bg, "Enregistrer", data.message ?? data);			
 		}).fail(function (data) {
 			displayToast("danger", "Error", "Error saving!");
 			alert(data.responseText);
@@ -2655,7 +2655,7 @@ Vvveb.Gui = {
 				bg = "danger";
 			}
 			
-			displayToast(bg, "Save", data.message ?? data);
+			displayToast(bg, "Enregistrer", data.message ?? data);
 
 			const offcanvas = document.getElementById('save-offcanvas');
 			if (offcanvas) {
@@ -4030,7 +4030,7 @@ Vvveb.FileManager = {
 							bg = "danger";
 						}
 
-						displayToast(bg, "Delete", data.message ?? data);
+						displayToast(bg, "Supprimer", data.message ?? data);
 				})
 				.catch(error => {
 					console.log(error);
