@@ -64,6 +64,13 @@ const isAdminToken = (req, res, next) => {
 // ========== 4. CONFIGURATION EXPRESS ==========
 const app = express();
 const server = http.createServer(app);
+
+// Middleware CSP pour VvvebJs
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; img-src * data: blob:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval';");
+    next();
+});
+
 app.use(express.json());
 // JWT_SECRET déclaré d’abord
 var JWT_SECRET = process.env.JWT_SECRET || 'meetgay_super_secret_key_2026';
@@ -356,18 +363,3 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
 });
 
-// Servir tous les fichiers statiques du dossier editor (CSS, JS, libs, etc.)
-// 1. Ensuite les middlewares
-app.use(express.json());
-app.use(express.static('/root/meetgay/public/editor'));
-
-// 2. Ensuite le middleware CSP
-app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; img-src * data: blob:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval';");
-    next();
-});
-
-// 3. Ensuite vos routes
-app.get("/editor.html", (req, res) => {
-    res.sendFile("/root/meetgay/public/editor/editor.html");
-});
