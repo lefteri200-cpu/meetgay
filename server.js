@@ -355,3 +355,24 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
 });
+
+// Servir tous les fichiers statiques du dossier editor (CSS, JS, libs, etc.)
+// 1. D'abord déclarer app
+const app = express();
+
+// 2. Ensuite les middlewares
+app.use(express.json());
+app.use(express.static('/root/meetgay/public/editor'));
+
+// 3. Ensuite le middleware CSP
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; img-src * data: blob:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval';");
+    next();
+});
+
+// 4. Ensuite vos routes
+app.get("/editor.html", (req, res) => {
+    res.sendFile("/root/meetgay/public/editor/editor.html");
+});
+
+
