@@ -16,6 +16,39 @@
 </head>
 
 <body>
+	<!-- Ajouter ce bouton quelque part dans la barre d'outils -->
+	<button id="import-html-btn" style="position:fixed; top:10px; right:100px; z-index:9999;">
+		📂 Importer HTML
+	</button>
+	
+	<script>
+		document.getElementById('import-html-btn').onclick = function () {
+			// Créer un input file
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.html,.htm';
+
+			input.onchange = function (e) {
+				const file = e.target.files[0];
+				const reader = new FileReader();
+
+				reader.onload = function (event) {
+					const htmlContent = event.target.result;
+
+					// Charger le HTML dans l'éditeur
+					Vvveb.Builder.init('about:blank', function () {
+						Vvveb.Builder.setHtml(htmlContent);
+						Vvveb.Gui.init();
+						alert('Fichier importé avec succès !');
+					});
+				};
+
+				reader.readAsText(file);
+			};
+
+			input.click();
+		};
+	</script>
 
 	<div id="vvveb-builder">
 		<div id="top-panel">
